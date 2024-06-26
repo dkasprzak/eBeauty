@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  football_hub_mssql:
+    image: mcr.microsoft.com/mssql/server:latest
+    environment:
+      - SA_PASSWORD=!Kofi1109!
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql_data:/var/opt/mssql
+    networks:
+      - mssql_network
+
+volumes:
+  mssql_data:
+    driver: local
+
+networks:
+  mssql_network:
+    driver: bridge
