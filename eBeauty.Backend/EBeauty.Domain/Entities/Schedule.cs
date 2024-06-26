@@ -7,3 +7,4 @@ public class Schedule
     public DateTimeOffset StartTime { get; set; }
     public DateTimeOffset EndTime { get; set; }
 }
+ 

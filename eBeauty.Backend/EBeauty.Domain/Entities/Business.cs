@@ -12,4 +12,7 @@ public class Business : DomainEntity
     public Account Account { get; set; } = default!;
     public int AddressId { get; set; }
     public Address Address { get; set; } = default!;
+    public ICollection<BusinessType> BusinessTypes { get; set; } = new List<BusinessType>();
+    public List<Service> Services { get; set; } = new();
+    public List<Reservation> Reservations = new();
 }
