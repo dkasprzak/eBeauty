@@ -15,4 +15,5 @@ public class Reservation : DomainEntity
     public DateTimeOffset StartTime { get; set; }
     public DateTimeOffset EndTime { get; set; }
     public string Comment { get; set; } = "";
+    public required string ReservationStatus { get; set; }
 }
