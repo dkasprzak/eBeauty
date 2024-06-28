@@ -2,6 +2,6 @@
 
 public enum AccountType
 {
-    Bussines = 1,
+    Business = 1,
     Customer = 2,
 }
