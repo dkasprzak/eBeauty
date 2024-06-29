@@ -7,6 +7,6 @@ public class AccountUser
     public int UserId { get; set; }
     public User User { get; set; } = default!;
     public List<Schedule> Schedules { get; set; } = new();
-    public List<Reservation> Reservations = new();
+    public List<Reservation> Reservations { get; set; } = new();
 
 }

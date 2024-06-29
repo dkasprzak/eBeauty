@@ -10,6 +10,6 @@ public class User : DomainEntity
     public string FirstName { get; set; } = "";
     public string LastName { get; set; } = "";
     public bool IsActive { get; set; }
-    public ICollection<AccountUser> AccountUsers = new List<AccountUser>();
-    public List<Reservation> Reservations = new();
+    public ICollection<AccountUser> AccountUsers { get; set; } = new List<AccountUser>();
+    public List<Reservation> Reservations { get; set; } = new();
 }

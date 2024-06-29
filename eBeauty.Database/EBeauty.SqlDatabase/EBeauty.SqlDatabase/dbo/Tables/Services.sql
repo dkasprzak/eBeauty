@@ -2,7 +2,7 @@
 (
     [Id] INT IDENTITY(1, 1) NOT NULL,
     [Name] NVARCHAR(200) NOT NULL,
-    [Price] DECIMAL(18, 2) NOT NULL,
+    [Price] DECIMAL(18, 4) NOT NULL,
     [Currency] VARCHAR(5) NOT NULL,
     [Duration] INT NOT NULL,
     [BusinessId] INT NOT NULL,
