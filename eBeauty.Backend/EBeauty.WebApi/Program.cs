@@ -1,3 +1,4 @@
+using EBeauty.Infrastructure;
 using Serilog;
 
 var APP_NAME = "EBeauty.WebApi";
@@ -24,6 +25,7 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
     .Enrich.FromLogContext());
 
 builder.Services.AddControllers();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(o =>
