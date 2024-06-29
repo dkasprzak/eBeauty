@@ -1,6 +1,6 @@
 using Serilog;
 
-const string APP_NAME = "EBeauty.WebApi";
+var APP_NAME = "EBeauty.WebApi";
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.WithProperty("Application", APP_NAME)
