@@ -8,5 +8,5 @@ public class OpeningHour : DomainEntity
     public TimeSpan? OpeningTime  { get; set; }
     public TimeSpan? ClosingTime { get; set; }
     public int BusinessId { get; set; }
-    public Business Business { get; set; }
+    public Business Business { get; set; } = default!;
 }
