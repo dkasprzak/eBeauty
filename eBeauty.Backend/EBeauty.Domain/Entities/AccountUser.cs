@@ -1,6 +1,8 @@
-﻿namespace EBeauty.Domain.Entities;
+﻿using EBeauty.Domain.Common;
 
-public class AccountUser
+namespace EBeauty.Domain.Entities;
+
+public class AccountUser : DomainEntity
 {
     public int AccountId { get; set; }
     public Account Account { get; set; } = default!;
