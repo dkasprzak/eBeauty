@@ -1,4 +1,5 @@
 ﻿using EBeauty.Application.Interfaces;
+using EFCoreSecondLevelCacheInterceptor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,7 +11,8 @@ public static class SqlDatabaseConfiguration
     {
         Action<IServiceProvider, DbContextOptionsBuilder> sqlOptions = (serviceProvider, options) =>
             options.UseSqlServer(connectionString,
-                o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery));
+                    o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery))
+                .AddInterceptors(serviceProvider.GetRequiredService<SecondLevelCacheInterceptor>());
 
         services.AddDbContext<IApplicationDbContext, MainDbContext>(sqlOptions);
 

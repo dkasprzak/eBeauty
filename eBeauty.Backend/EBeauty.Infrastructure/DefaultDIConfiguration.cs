@@ -8,6 +8,7 @@ public static class DefaultDIConfiguration
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddDatabaseCache();
         services.AddSqlDatabase(configuration.GetConnectionString("MainDbSql")!);
         return services;
     }

@@ -1,6 +1,7 @@
 ﻿using EBeauty.Application.Exceptions;
 using EBeauty.Application.Interfaces;
 using EBeauty.Domain.Entities;
+using EFCoreSecondLevelCacheInterceptor;
 using Microsoft.EntityFrameworkCore;
 
 namespace EBeauty.Application.Services;
@@ -27,6 +28,7 @@ public class CurrentAccountProvider : ICurrentAccountProvider
                 .Where(au => au.UserId == userId.Value)
                 .OrderBy(au => au.Id)
                 .Select(au => (int?)au.AccountId)
+                .Cacheable()
                 .FirstOrDefaultAsync();
         }
         return null;
@@ -40,7 +42,10 @@ public class CurrentAccountProvider : ICurrentAccountProvider
             throw new UnauthorizedException();
         }
 
-        var account = await _dbContext.Accounts.FirstOrDefaultAsync(a => a.Id == accountId.Value);
+        var account = await _dbContext.Accounts
+            .Cacheable()
+            .FirstOrDefaultAsync(a => a.Id == accountId.Value);
+        
         if (account == null)
         {
             throw new NotFoundException();
