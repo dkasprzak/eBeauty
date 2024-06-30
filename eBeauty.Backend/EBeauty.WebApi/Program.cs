@@ -1,5 +1,6 @@
 using EBeauty.Application;
 using EBeauty.Infrastructure;
+using EBeauty.WebApi.Middlewares;
 using Serilog;
 
 var APP_NAME = "EBeauty.WebApi";
@@ -45,6 +46,8 @@ builder.Services.AddSwaggerGen(o =>
 
 var app = builder.Build();
 
+app.UseExceptionResultMiddleware();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -52,5 +55,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthorization();
 app.MapControllers();
 app.Run();
