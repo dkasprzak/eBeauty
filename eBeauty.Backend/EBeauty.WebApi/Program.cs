@@ -1,3 +1,4 @@
+using EBeauty.Application;
 using EBeauty.Infrastructure;
 using Serilog;
 
@@ -26,6 +27,7 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
 
 builder.Services.AddControllers();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(o =>
