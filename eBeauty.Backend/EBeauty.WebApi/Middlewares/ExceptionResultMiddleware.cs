@@ -33,7 +33,7 @@ public class ExceptionResultMiddleware
         catch (NotFoundException nf)
         {
             httpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
-            await httpContext.Response.WriteAsJsonAsync(new NotFoundResponse { Message = nf.Message ?? "Not Found"});
+            await httpContext.Response.WriteAsJsonAsync(new NotFoundResponse { Message = nf.Message});
         }
         catch (Exception e)
         {

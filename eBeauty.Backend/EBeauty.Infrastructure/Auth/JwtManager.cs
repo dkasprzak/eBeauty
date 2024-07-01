@@ -25,7 +25,6 @@ public class JwtManager
 
         return new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtOptions.Secret));
     }
-
     private string GenerateTokenWithClaims(IEnumerable<Claim> claims)
     {
         var mySecurityKey = GetSecurityKey();

@@ -2,7 +2,9 @@
 
 public sealed class NotFoundException : Exception
 {
-    public NotFoundException() : base("Not Found")
+    public string Message { get; private set; }
+    public NotFoundException(string message)
     {
+        Message = message;
     }
 }

@@ -1,5 +1,6 @@
 using EBeauty.Application;
 using EBeauty.Infrastructure;
+using EBeauty.WebApi.Auth;
 using EBeauty.WebApi.Middlewares;
 using Serilog;
 
@@ -26,8 +27,10 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
     .ReadFrom.Services(services)
     .Enrich.FromLogContext());
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddJwtAuthenticationDataProvider(builder.Configuration);
 builder.Services.AddApplication();
 
 builder.Services.AddEndpointsApiExplorer();

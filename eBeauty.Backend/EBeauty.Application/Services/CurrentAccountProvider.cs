@@ -48,7 +48,7 @@ public class CurrentAccountProvider : ICurrentAccountProvider
         
         if (account == null)
         {
-            throw new NotFoundException();
+            throw new NotFoundException("AccountDoesNotExists");
         }
         return account;
     }
