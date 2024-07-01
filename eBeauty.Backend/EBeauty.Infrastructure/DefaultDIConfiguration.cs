@@ -1,4 +1,5 @@
-﻿using EBeauty.Infrastructure.Persistence;
+﻿using EBeauty.Infrastructure.Auth;
+using EBeauty.Infrastructure.Persistence;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +11,7 @@ public static class DefaultDIConfiguration
     {
         services.AddDatabaseCache();
         services.AddSqlDatabase(configuration.GetConnectionString("MainDbSql")!);
+        services.AddJwtAuth(configuration);
         return services;
     }
 }

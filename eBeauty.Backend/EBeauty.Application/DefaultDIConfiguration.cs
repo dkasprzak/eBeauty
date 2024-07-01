@@ -9,13 +9,13 @@ public static class DefaultDIConfiguration
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
+        services.AddScoped<ICurrentAccountProvider, CurrentAccountProvider>();
+        
         services.AddMediatR(c =>
         {
             c.RegisterServicesFromAssemblyContaining(typeof(BaseCommandHandler));
         });
         
-        services.AddScoped<ICurrentAccountProvider, CurrentAccountProvider>();
-
         return services;
     }
 }
