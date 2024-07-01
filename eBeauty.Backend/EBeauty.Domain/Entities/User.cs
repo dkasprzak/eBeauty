@@ -11,5 +11,5 @@ public class User : DomainEntity
     public string LastName { get; set; } = "";
     public bool IsActive { get; set; }
     public ICollection<AccountUser> AccountUsers { get; set; } = new List<AccountUser>();
-    public List<Reservation> Reservations { get; set; } = new();
+    public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 }

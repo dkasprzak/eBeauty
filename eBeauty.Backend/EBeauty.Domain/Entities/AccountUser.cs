@@ -8,7 +8,7 @@ public class AccountUser : DomainEntity
     public Account Account { get; set; } = default!;
     public int UserId { get; set; }
     public User User { get; set; } = default!;
-    public List<Schedule> Schedules { get; set; } = new();
-    public List<Reservation> Reservations { get; set; } = new();
+    public ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
+    public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 
 }

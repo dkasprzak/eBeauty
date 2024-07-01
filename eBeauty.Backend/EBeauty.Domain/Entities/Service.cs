@@ -13,5 +13,5 @@ public class Service : DomainEntity
     public Business Business { get; set; } = default!;
     public int BusinessTypeId { get; set; }
     public BusinessType BusinessType { get; set; } = default!;
-    public List<Reservation> Reservations { get; set; } = new();
+    public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 }
