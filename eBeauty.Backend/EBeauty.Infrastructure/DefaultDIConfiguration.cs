@@ -12,6 +12,7 @@ public static class DefaultDIConfiguration
         services.AddDatabaseCache();
         services.AddSqlDatabase(configuration.GetConnectionString("MainDbSql")!);
         services.AddJwtAuth(configuration);
+        services.AddPasswordManager();
         return services;
     }
 }
