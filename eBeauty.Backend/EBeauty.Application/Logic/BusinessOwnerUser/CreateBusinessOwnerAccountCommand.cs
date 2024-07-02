@@ -2,12 +2,13 @@
 using EBeauty.Application.Interfaces;
 using EBeauty.Application.Logic.Abstractions;
 using EBeauty.Domain.Entities;
+using EBeauty.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace EBeauty.Application.Logic.UserBusiness;
+namespace EBeauty.Application.Logic.BusinessOwnerUser;
 
-public static class CreateUserWithBusinessAccountCommand
+public static class CreateBusinessOwnerAccountCommand
 {
     public class Request : IRequest<Result>
     {
@@ -15,6 +16,7 @@ public static class CreateUserWithBusinessAccountCommand
         public required string Password { get; set; }
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
+        public required string BusinessName { get; set; }
     }
     
     public class Result
@@ -39,6 +41,12 @@ public static class CreateUserWithBusinessAccountCommand
                 throw new ErrorException("AccountWithThisEmailAlreadyExists");
             }
 
+            var accountNameExists = await _applicationDbContext.Accounts.AnyAsync(x => x.Name == request.BusinessName);
+            if (accountNameExists)
+            {
+                throw new ErrorException("AccountWithThisBusinessNameAlreadyExists");
+            }
+
             var utcNow = DateTime.UtcNow;
             var user = new User
             {
@@ -53,6 +61,30 @@ public static class CreateUserWithBusinessAccountCommand
             user.HashedPassword = _passwordManager.HashPassword(request.Password);
 
             _applicationDbContext.Users.Add(user);
+
+            var account = new Account
+            {
+                Name = request.BusinessName,
+                AccountType = AccountType.Business,
+                CreateDate = utcNow
+            };
+
+            _applicationDbContext.Accounts.Add(account);
+
+            var accountUser = new AccountUser
+            {
+                Account = account,
+                User = user
+            };
+
+            _applicationDbContext.AccountUsers.Add(accountUser);
+            
+            await _applicationDbContext.SaveChangesAsync(cancellationToken);
+
+            return new Result
+            {
+                UserId = user.Id
+            };
         }
     }
 }

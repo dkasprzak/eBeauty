@@ -4,8 +4,8 @@ namespace EBeauty.Application.Logic.Abstractions;
 
 public abstract class BaseCommandHandler
 {
-    private readonly ICurrentAccountProvider _currentAccountProvider;
-    private readonly IApplicationDbContext _applicationDbContext;
+    protected readonly ICurrentAccountProvider _currentAccountProvider;
+    protected readonly IApplicationDbContext _applicationDbContext;
 
     public BaseCommandHandler(ICurrentAccountProvider currentAccountProvider, IApplicationDbContext applicationDbContext)
     {
