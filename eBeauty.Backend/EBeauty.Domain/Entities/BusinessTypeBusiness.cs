@@ -1,6 +1,8 @@
-﻿namespace EBeauty.Domain.Entities;
+﻿using EBeauty.Domain.Common;
 
-public class BusinessTypeBusiness
+namespace EBeauty.Domain.Entities;
+
+public class BusinessTypeBusiness : DomainEntity
 {
     public required int BusinessTypeId { get; set; }
     public BusinessType BusinessType { get; set; } = default!;

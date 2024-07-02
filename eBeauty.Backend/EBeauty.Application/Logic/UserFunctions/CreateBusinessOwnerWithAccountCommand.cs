@@ -6,11 +6,11 @@ using EBeauty.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace EBeauty.Application.Logic.BusinessOwnerUser;
+namespace EBeauty.Application.Logic.UserFunctions;
 
-public static class CreateBusinessOwnerAccountCommand
+public static class CreateBusinessOwnerWithAccountCommand
 {
-    public class Request : IRequest<Result>
+    public record Request : IRequest<Result>
     {
         public required string Email { get; set; }
         public required string Password { get; set; }
@@ -19,7 +19,7 @@ public static class CreateBusinessOwnerAccountCommand
         public required string BusinessName { get; set; }
     }
     
-    public class Result
+    public record Result
     {
         public required int UserId { get; set; }
     }

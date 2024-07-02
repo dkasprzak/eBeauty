@@ -1,6 +1,8 @@
-﻿namespace EBeauty.Domain.Entities;
+﻿using EBeauty.Domain.Common;
 
-public class Schedule
+namespace EBeauty.Domain.Entities;
+
+public class Schedule : DomainEntity
 {
     public int AccountUserId { get; set; }
     public AccountUser AccountUser { get; set; } = default!;
