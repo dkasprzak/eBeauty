@@ -1,6 +1,9 @@
 ﻿using EBeauty.Application.Interfaces;
 using EBeauty.Application.Logic.Abstractions;
 using EBeauty.Application.Services;
+using EBeauty.Application.Validators;
+using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EBeauty.Application;
@@ -16,6 +19,13 @@ public static class DefaultDIConfiguration
             c.RegisterServicesFromAssemblyContaining(typeof(BaseCommandHandler));
         });
         
+        return services;
+    }
+
+    public static IServiceCollection AddValidators(this IServiceCollection services)
+    {
+        services.AddValidatorsFromAssemblyContaining(typeof(BaseQueryHandler));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         return services;
     }
 }

@@ -32,6 +32,7 @@ builder.Services.AddControllers();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddJwtAuthenticationDataProvider(builder.Configuration);
 builder.Services.AddApplication();
+builder.Services.AddValidators();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(o =>

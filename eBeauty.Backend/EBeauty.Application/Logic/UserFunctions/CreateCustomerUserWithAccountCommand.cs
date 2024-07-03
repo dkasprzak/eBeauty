@@ -3,6 +3,7 @@ using EBeauty.Application.Interfaces;
 using EBeauty.Application.Logic.Abstractions;
 using EBeauty.Domain.Entities;
 using EBeauty.Domain.Enums;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -78,6 +79,24 @@ public static class CreateCustomerUserWithAccountCommand
             {
                 UserId = user.Id
             };
+        }
+        public class Validator : AbstractValidator<Request>
+        {
+            public Validator()
+            {
+                RuleFor(x => x.Email).NotEmpty();
+                RuleFor(x => x.Email).EmailAddress();
+                RuleFor(x => x.Email).MaximumLength(100);
+                
+                RuleFor(x => x.Password).NotEmpty();
+                RuleFor(x => x.Password).MaximumLength(200);
+                
+                RuleFor(x => x.FirstName).NotEmpty();
+                RuleFor(x => x.FirstName).MaximumLength(100);
+                
+                RuleFor(x => x.LastName).NotEmpty();
+                RuleFor(x => x.LastName).MaximumLength(100);
+            }
         }
     }
 }
