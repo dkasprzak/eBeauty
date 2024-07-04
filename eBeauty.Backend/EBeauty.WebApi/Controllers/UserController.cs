@@ -1,4 +1,5 @@
-﻿using EBeauty.Application.Logic.UserFunctions;
+﻿using EBeauty.Application.Logic.UserFunctions.Commands;
+using EBeauty.Application.Logic.UserFunctions.Queries;
 using EBeauty.Infrastructure.Auth;
 using EBeauty.WebApi.Application.Responses;
 using EBeauty.WebApi.Auth;
@@ -80,6 +81,13 @@ public class UserController : BaseController
             };
         }
         Response.Cookies.Append(CookieSettings.CookieName, token, cookieOption);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult> GetLoggedInUser()
+    {
+        var result = await _mediator.Send(new LoggedInUserQuery.Request());
+        return Ok(result);
     }
 
     private void DeleteTokenCookie()

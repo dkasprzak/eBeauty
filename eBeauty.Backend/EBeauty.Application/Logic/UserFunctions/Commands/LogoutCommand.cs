@@ -3,7 +3,7 @@ using EBeauty.Application.Logic.Abstractions;
 using FluentValidation;
 using MediatR;
 
-namespace EBeauty.Application.Logic.UserFunctions;
+namespace EBeauty.Application.Logic.UserFunctions.Commands;
 
 public static class LogoutCommand
 {

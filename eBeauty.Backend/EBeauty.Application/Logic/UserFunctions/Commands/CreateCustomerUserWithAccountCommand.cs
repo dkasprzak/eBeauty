@@ -7,7 +7,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace EBeauty.Application.Logic.UserFunctions;
+namespace EBeauty.Application.Logic.UserFunctions.Commands;
 
 public static class CreateCustomerUserWithAccountCommand
 {
