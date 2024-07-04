@@ -1,5 +1,4 @@
-﻿using EBeauty.Application.Exceptions;
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 using ValidationException = EBeauty.Application.Exceptions.ValidationException;
 
