@@ -48,7 +48,17 @@ builder.Services.AddSwaggerGen(o =>
     });
 });
 
+builder.Services.AddCors();
+
 var app = builder.Build();
+
+app.UseCors(builder => builder
+    .WithOrigins(app.Configuration.GetValue<string>("WebAppBaseUrl") ?? "")
+    .WithOrigins(app.Configuration.GetSection("AdditionalCorsOrigins").Get<string[]>() ?? new string[0])
+    .WithOrigins((Environment.GetEnvironmentVariable("AdditionalCorsOrigins") ?? "").Split(',').Where(h => !string.IsNullOrEmpty(h)).Select(h => h.Trim()).ToArray())
+    .AllowAnyHeader()
+    .AllowCredentials()
+    .AllowAnyMethod());
 
 app.UseExceptionResultMiddleware();
 
