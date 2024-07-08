@@ -2,6 +2,7 @@ using EBeauty.Application;
 using EBeauty.Infrastructure;
 using EBeauty.WebApi.Auth;
 using EBeauty.WebApi.Middlewares;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
 var APP_NAME = "EBeauty.WebApi";
@@ -28,7 +29,13 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
     .Enrich.FromLogContext());
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddControllers();
+builder.Services.AddControllersWithViews(options =>
+{
+    if (!builder.Environment.IsDevelopment())
+    {
+        options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+    }
+});
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddJwtAuthenticationDataProvider(builder.Configuration);
 builder.Services.AddApplication();
@@ -46,6 +53,11 @@ builder.Services.AddSwaggerGen(o =>
         }
         return name;
     });
+});
+
+builder.Services.AddAntiforgery(o =>
+{
+    o.HeaderName = "X-XSRF-TOKEN";
 });
 
 builder.Services.AddCors();

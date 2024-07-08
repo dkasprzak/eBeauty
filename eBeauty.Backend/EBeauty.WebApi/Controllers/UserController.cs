@@ -4,6 +4,8 @@ using EBeauty.Infrastructure.Auth;
 using EBeauty.WebApi.Application.Responses;
 using EBeauty.WebApi.Auth;
 using MediatR;
+using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -15,17 +17,22 @@ public class UserController : BaseController
 {
     private readonly CookieSettings _cookieSettings;
     private readonly JwtManager _jwtManager;
+    private readonly IAntiforgery _antiforgery;
 
     public UserController(ILogger<UserController> logger, 
         IOptions<CookieSettings> cookieSettings,
         JwtManager jwtManager,
+        IAntiforgery antiforgery,
         IMediator mediator) : base(logger, mediator)
     {
         _cookieSettings = cookieSettings != null ? cookieSettings.Value : null;
         _jwtManager = jwtManager;
+        _antiforgery = antiforgery;
     }
 
+    
     [HttpPost]
+    [IgnoreAntiforgeryToken]
     public async Task<ActionResult> CreateCustomerUserWithAccount([FromBody] CreateCustomerUserWithAccountCommand.Request model)
     {
         var result = await _mediator.Send(model);
@@ -35,6 +42,7 @@ public class UserController : BaseController
     }
     
     [HttpPost]
+    [IgnoreAntiforgeryToken]
     public async Task<ActionResult> CreateBusinessOwnerWithAccount([FromBody] CreateBusinessOwnerWithAccountCommand.Request model)
     {
         var result = await _mediator.Send(model);
@@ -60,6 +68,13 @@ public class UserController : BaseController
         return Ok(result);
     }
 
+    [HttpGet]
+    public async Task<ActionResult> AntiforgeryToken()
+    {
+        var tokens = _antiforgery.GetAndStoreTokens(HttpContext);
+        return Ok(tokens.RequestToken);
+    }
+    
     private void SetTokenCookie(string token)
     {
         var cookieOption = new CookieOptions
