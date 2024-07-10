@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using EBeauty.Application;
 using EBeauty.Infrastructure;
 using EBeauty.WebApi.Auth;
@@ -35,7 +36,9 @@ builder.Services.AddControllersWithViews(options =>
     {
         options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
     }
-});
+}).AddJsonOptions(options => 
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddJwtAuthenticationDataProvider(builder.Configuration);
 builder.Services.AddApplication();
