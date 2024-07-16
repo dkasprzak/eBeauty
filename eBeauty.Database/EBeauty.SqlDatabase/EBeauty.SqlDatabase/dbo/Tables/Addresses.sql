@@ -2,6 +2,7 @@
 (
     [Id] INT IDENTITY(1, 1) NOT NULL,
     [Country] NVARCHAR(100) NOT NULL,
+    [City] NVARCHAR(100) NOT NULL,
     [Street] NVARCHAR(100) NOT NULL,
     [StreetNumber] NVARCHAR(50) NOT NULL,
     [PostalCode] NVARCHAR(10) NOT NULL,
