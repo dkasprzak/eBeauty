@@ -4,7 +4,7 @@ namespace EBeauty.Domain.Entities;
 
 public class Business : DomainEntity
 {
-    public required string TaxNumber { get; set; }
+    public string TaxNumber { get; set; } = "";
     public string Email { get; set; } = "";
     public string PhoneNumber { get; set; } = "";
     public string Description { get; set; } = "";

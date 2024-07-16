@@ -27,6 +27,7 @@ public static class BusinessTypeListQuery
         public async Task<Result> Handle(Request request, CancellationToken cancellationToken)
         {
             var businessTypes = await _applicationDbContext.BusinessTypes
+                .OrderBy(x => x.Id)
                 .Select(x => new Result.BusinessType
                 {
                     Id = x.Id,
