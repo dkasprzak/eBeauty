@@ -97,7 +97,7 @@ public static class CreateOrUpdateBusinessData
             addressModel.Country = request.Country;
             addressModel.City = request.City;
             addressModel.Street = request.Street;
-            addressModel.StreetNumber = request.StreetNumber;
+            addressModel.StreetNumber = request.StreetNumber.ToUpper();
             addressModel.PostalCode = request.PostalCode;
             businessModel.Address = addressModel;
             
@@ -152,10 +152,12 @@ public static class CreateOrUpdateBusinessData
             RuleFor(x => x.City).MaximumLength(100);
             
             RuleFor(x => x.StreetNumber).NotEmpty();
-            RuleFor(x => x.City).MaximumLength(50);
+            RuleFor(x => x.StreetNumber).MaximumLength(50);
+            RuleFor(x => x.StreetNumber).StreetNumber();
             
             RuleFor(x => x.PostalCode).NotEmpty();
             RuleFor(x => x.PostalCode).MaximumLength(10);
+            RuleFor(x => x.PostalCode).PostalCode();
 
             RuleFor(x => x.BusinessTypes).NotEmpty();
             RuleForEach(x => x.BusinessTypes).ChildRules(

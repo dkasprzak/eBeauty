@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EBeauty.Application", "EBea
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EBeauty.Infrastructure", "EBeauty.Infrastructure\EBeauty.Infrastructure.csproj", "{1C801F3A-BC19-44E5-98F3-C8D81330A69E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EBeauty.Application.Tests", "EBeauty.Application.Tests\EBeauty.Application.Tests.csproj", "{3F7A5044-03AE-4B18-9DC5-FF16068E75F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{1C801F3A-BC19-44E5-98F3-C8D81330A69E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C801F3A-BC19-44E5-98F3-C8D81330A69E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C801F3A-BC19-44E5-98F3-C8D81330A69E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F7A5044-03AE-4B18-9DC5-FF16068E75F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F7A5044-03AE-4B18-9DC5-FF16068E75F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F7A5044-03AE-4B18-9DC5-FF16068E75F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F7A5044-03AE-4B18-9DC5-FF16068E75F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
