@@ -139,7 +139,9 @@ public static class CreateOrUpdateBusinessData
                 .PhoneNumber()
                 .When(x => !string.IsNullOrEmpty(x.PhoneNumber));
 
+            RuleFor(x => x.TaxNumber).NotEmpty();
             RuleFor(x => x.TaxNumber).MaximumLength(10);
+            RuleFor(x => x.TaxNumber).PolishTaxNumber();
 
             RuleFor(x => x.Description).MaximumLength(200);
 

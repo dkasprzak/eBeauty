@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace EBeauty.Application.Validators;
 
-public static class ExtensionClass
+public static class PhoneNumberExtensionClass
 {
     public static IRuleBuilderOptions<T, string> PhoneNumber<T>(this IRuleBuilder<T, string> ruleBuilder)
     {
