@@ -1,4 +1,5 @@
 ﻿using EBeauty.Application.Logic.BusinessFunctions.Commands;
+using EBeauty.Application.Logic.BusinessFunctions.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,13 @@ public class BusinessController : BaseController
 {
     public BusinessController(ILogger<BusinessController> logger, IMediator mediator) : base(logger, mediator)
     {
+    }
+
+    [HttpGet]
+    public async Task<ActionResult> GetBusinessDetail([FromQuery] BusinessDetailQuery.Request query)
+    {
+        var result = await _mediator.Send(query);
+        return Ok(result);
     }
     
     [HttpPost]

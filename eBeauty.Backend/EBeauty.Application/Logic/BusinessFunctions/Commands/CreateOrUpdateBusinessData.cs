@@ -1,6 +1,7 @@
 ﻿using EBeauty.Application.Exceptions;
 using EBeauty.Application.Interfaces;
 using EBeauty.Application.Logic.Abstractions;
+using EBeauty.Application.Validators;
 using EBeauty.Domain.Entities;
 using FluentValidation;
 using MediatR;
@@ -13,16 +14,21 @@ public static class CreateOrUpdateBusinessData
     public class Request : IRequest<Result> 
     { 
         public int? Id { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Description { get; set; }
+        public string? Email { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? Description { get; set; }
         public required string TaxNumber { get; set; }
         public required string Country { get; set; }
         public required string City { get; set; }
         public required string Street { get; set; }
         public required string StreetNumber { get; set; }
         public required string PostalCode { get; set; }
-        public required int BusinessTypeId { get; set; }
+        public required List<BusinessType> BusinessTypes { get; set; } = new(); 
+
+        public record BusinessType
+        {
+            public required int BusinessTypeId { get; set; }
+        }
     }
 
     public class Result
@@ -41,9 +47,9 @@ public static class CreateOrUpdateBusinessData
         {
             var account = await _currentAccountProvider.GetAuthenticatedAccount();
             
-            Domain.Entities.Business? businessModel;
-            Domain.Entities.Address? addressModel;
-            Domain.Entities.BusinessTypeBusiness? businessTypeBusinessModel;
+            Business? businessModel;
+            Address? addressModel;
+            List<BusinessTypeBusiness>? businessTypeBusinessModels;
 
             if (request.Id.HasValue)
             {
@@ -59,8 +65,7 @@ public static class CreateOrUpdateBusinessData
                 }
                 
                 addressModel = businessModel.Address;
-                businessTypeBusinessModel =
-                    businessModel.BusinessTypeBusiness.FirstOrDefault(x => x.BusinessId == businessModel.Id);
+                businessTypeBusinessModels = businessModel.BusinessTypeBusiness.ToList();
             }
             else
             {
@@ -70,22 +75,23 @@ public static class CreateOrUpdateBusinessData
                 businessModel = new Business();
                 _applicationDbContext.Businesses.Add(businessModel);
 
-                businessTypeBusinessModel = new BusinessTypeBusiness();
-                _applicationDbContext.BusinessTypeBusinesses.Add(businessTypeBusinessModel);
+                businessTypeBusinessModels = new List<BusinessTypeBusiness>();
             }
 
-            var businessType = await _applicationDbContext.BusinessTypes
-                .FirstOrDefaultAsync(x => x.Id == request.BusinessTypeId, cancellationToken);
+            var businessTypes = await _applicationDbContext.BusinessTypes
+                .Where(x => request.BusinessTypes.Select(bt => bt.BusinessTypeId).Contains(x.Id))
+                .ToListAsync();
 
                             
-            if (businessTypeBusinessModel == null || businessType == null)
+            if (businessTypes.Count != request.BusinessTypes.Count)
             {
                 throw new UnauthorizedException();
             }
-            
-            businessModel.Email = request.Email;
-            businessModel.PhoneNumber = request.PhoneNumber;
-            businessModel.Description = request.Description;
+
+
+            if (request.Email != null) businessModel.Email = request.Email;
+            if (request.PhoneNumber != null) businessModel.PhoneNumber = request.PhoneNumber;
+            if (request.Description != null) businessModel.Description = request.Description;
             businessModel.TaxNumber = request.TaxNumber;
             addressModel.Id = addressModel.Id;
             addressModel.Country = request.Country;
@@ -94,8 +100,22 @@ public static class CreateOrUpdateBusinessData
             addressModel.StreetNumber = request.StreetNumber;
             addressModel.PostalCode = request.PostalCode;
             businessModel.Address = addressModel;
-            businessTypeBusinessModel.BusinessType = businessType;
-            businessTypeBusinessModel.Business = businessModel;
+            
+            _applicationDbContext.BusinessTypeBusinesses.RemoveRange(businessModel.BusinessTypeBusiness);
+            businessTypeBusinessModels.Clear();
+
+            foreach (var businessType in businessTypes)
+            {
+                var businessTypeBusiness = new BusinessTypeBusiness
+                {
+                    BusinessType = businessType,
+                    Business = businessModel
+                };
+                businessTypeBusinessModels.Add(businessTypeBusiness);
+                _applicationDbContext.BusinessTypeBusinesses.Add(businessTypeBusiness);
+            }
+
+            businessModel.BusinessTypeBusiness = businessTypeBusinessModels;
             account.Business = businessModel;
 
             await _applicationDbContext.SaveChangesAsync(cancellationToken);
@@ -115,6 +135,9 @@ public static class CreateOrUpdateBusinessData
             RuleFor(x => x.Email).EmailAddress();
 
             RuleFor(x => x.PhoneNumber).MaximumLength(20);
+            RuleFor(x => x.PhoneNumber)
+                .PhoneNumber()
+                .When(x => !string.IsNullOrEmpty(x.PhoneNumber));
 
             RuleFor(x => x.TaxNumber).MaximumLength(10);
 
@@ -132,7 +155,13 @@ public static class CreateOrUpdateBusinessData
             RuleFor(x => x.PostalCode).NotEmpty();
             RuleFor(x => x.PostalCode).MaximumLength(10);
 
-            RuleFor(x => x.BusinessTypeId).NotEmpty();
+            RuleFor(x => x.BusinessTypes).NotEmpty();
+            RuleForEach(x => x.BusinessTypes).ChildRules(
+                businessType =>
+                {
+                    businessType.RuleFor(x => x.BusinessTypeId).NotEmpty();
+                }
+            );
         }
     }
 }
