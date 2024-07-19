@@ -1,4 +1,5 @@
 ﻿using EBeauty.Application.Exceptions;
+using EBeauty.Application.Helpers;
 using EBeauty.Application.Interfaces;
 using EBeauty.Application.Logic.Abstractions;
 using EBeauty.Application.Validators;
@@ -21,7 +22,12 @@ public static class CreateOrUpdateBusinessData
         public required string Country { get; set; }
         public required string City { get; set; }
         public required string Street { get; set; }
-        public required string StreetNumber { get; set; }
+        private string _streetNumber = null!;
+        public required string StreetNumber
+        {
+            get => _streetNumber;
+            set => _streetNumber = StreetNumberFormatter.FormatStreetNumber(value);
+        }
         public required string PostalCode { get; set; }
         public required List<BusinessType> BusinessTypes { get; set; } = new(); 
 
