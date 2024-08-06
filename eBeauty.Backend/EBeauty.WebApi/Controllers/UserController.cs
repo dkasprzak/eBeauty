@@ -52,6 +52,20 @@ public class UserController : BaseController
     }
     
     [HttpPost]
+    public async Task<ActionResult> CreateOrAssignEmployeeUserToBusiness([FromBody] CreateOrAssignEmployeeUserToBusinessCommand.Request model)
+    {
+        var result = await _mediator.Send(model);
+        return Ok(result);
+    }
+    
+    [HttpPost]
+    public async Task<ActionResult> AssignEmployeeUserToBusiness([FromBody] AssignEmployeeUserToBusinessCommand.Request model)
+    {
+        var result = await _mediator.Send(model);
+        return Ok(result);
+    }
+    
+    [HttpPost]
     public async Task<ActionResult> Login([FromBody] LoginCommand.Request model)
     {
         var result = await _mediator.Send(model);
