@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EBeauty.Application.Logic.BusinessFunctions.Commands;
 
-public static class EditOpeningHoursCommand
+public static class UpdateOpeningHoursCommand
 {
     public class Request : IRequest<Result>
     {

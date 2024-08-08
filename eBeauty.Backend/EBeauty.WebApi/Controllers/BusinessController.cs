@@ -34,6 +34,13 @@ public class BusinessController : BaseController
         return Ok(result);
     }
     
+    [HttpPut]
+    public async Task<ActionResult> UpdateBusinessOpeningHours(UpdateOpeningHoursCommand.Request model)
+    {
+        var result = await _mediator.Send(model);
+        return Ok(result);
+    }
+    
     [HttpPost]
     public async Task<ActionResult> AddOpeningHours(AddOpeningHoursCommand.Request model)
     {
