@@ -13,6 +13,7 @@ public static class DefaultDIConfiguration
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddScoped<ICurrentAccountProvider, CurrentAccountProvider>();
+        services.AddScoped<ICurrentBusinessProvider, CurrentBusinessProvider>();
         
         services.AddMediatR(c =>
         {
