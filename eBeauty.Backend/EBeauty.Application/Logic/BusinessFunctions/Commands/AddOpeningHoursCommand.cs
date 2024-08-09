@@ -1,8 +1,9 @@
 ﻿using EBeauty.Application.Exceptions;
 using EBeauty.Application.Interfaces;
 using EBeauty.Application.Logic.Abstractions;
+using EBeauty.Application.Validators;
+using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace EBeauty.Application.Logic.BusinessFunctions.Commands;
 
@@ -58,6 +59,30 @@ public static class AddOpeningHoursCommand
             {
                 BusinessId = businessId.Value
             };
+        }
+        
+        public class Validator : AbstractValidator<Request>
+        {
+            public Validator()
+            {
+                RuleForEach(x => x.OpeningHours)
+                    .ChildRules(openingHour =>
+                    {
+                        openingHour.RuleFor(oh => oh.DayOfWeek)
+                            .NotEmpty();
+
+                        openingHour.RuleFor(oh => oh.OpeningTime)
+                            .NotEmpty()
+                            .ValidTime();
+
+                        openingHour.RuleFor(oh => oh.ClosingTime)
+                            .NotEmpty()
+                            .ValidTime();
+
+                        openingHour.RuleFor(oh => oh)
+                            .Must(oh => TimeSpan.Parse(oh.ClosingTime) > TimeSpan.Parse(oh.OpeningTime));
+                    });
+            }
         }
     }
 }

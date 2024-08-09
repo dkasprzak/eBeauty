@@ -1,6 +1,8 @@
 ﻿using EBeauty.Application.Exceptions;
 using EBeauty.Application.Interfaces;
 using EBeauty.Application.Logic.Abstractions;
+using EBeauty.Application.Validators;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -59,6 +61,26 @@ public static class UpdateOpeningHoursCommand
                 BusinessId = businessId.Value
             };
 
+        }
+    }
+    
+    public class Validator : AbstractValidator<Request>
+    {
+        public Validator()
+        {
+            RuleFor(oh => oh.DayOfWeek)
+                .NotEmpty();
+            
+           RuleFor(oh => oh.OpeningTime)
+               .NotEmpty()
+                .ValidTime();
+
+            RuleFor(oh => oh.ClosingTime)
+                .NotEmpty()
+                .ValidTime();
+
+            RuleFor(oh => oh)
+                .Must(oh => TimeSpan.Parse(oh.ClosingTime) > TimeSpan.Parse(oh.OpeningTime));
         }
     }
 }
