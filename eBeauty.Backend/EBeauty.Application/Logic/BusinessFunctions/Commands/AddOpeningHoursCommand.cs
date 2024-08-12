@@ -2,6 +2,7 @@
 using EBeauty.Application.Interfaces;
 using EBeauty.Application.Logic.Abstractions;
 using EBeauty.Application.Validators;
+using EBeauty.Domain.Enums;
 using FluentValidation;
 using MediatR;
 
@@ -14,7 +15,7 @@ public static class AddOpeningHoursCommand
         public List<OpeningHour> OpeningHours { get; set; } = new();
         public record OpeningHour
         {
-            public DayOfWeek DayOfWeek { get; set; }
+            public DaysOfWeek DayOfWeek { get; set; }
             public required string OpeningTime { get; set; }
             public required string ClosingTime { get; set; }
         }
@@ -69,8 +70,9 @@ public static class AddOpeningHoursCommand
                     .ChildRules(openingHour =>
                     {
                         openingHour.RuleFor(oh => oh.DayOfWeek)
-                            .NotEmpty();
-
+                            .NotEmpty()
+                            .IsInEnum();
+                        
                         openingHour.RuleFor(oh => oh.OpeningTime)
                             .NotEmpty()
                             .ValidTime();

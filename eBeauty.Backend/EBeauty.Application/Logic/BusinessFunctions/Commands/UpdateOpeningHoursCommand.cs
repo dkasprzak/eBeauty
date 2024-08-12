@@ -2,6 +2,7 @@
 using EBeauty.Application.Interfaces;
 using EBeauty.Application.Logic.Abstractions;
 using EBeauty.Application.Validators;
+using EBeauty.Domain.Enums;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,7 @@ public static class UpdateOpeningHoursCommand
 {
     public class Request : IRequest<Result>
     {
-        public DayOfWeek DayOfWeek { get; set; }
+        public DaysOfWeek DayOfWeek { get; set; }
         public required string OpeningTime { get; set; }
         public required string ClosingTime { get; set; }
     }
@@ -69,7 +70,8 @@ public static class UpdateOpeningHoursCommand
         public Validator()
         {
             RuleFor(oh => oh.DayOfWeek)
-                .NotEmpty();
+                .NotEmpty()
+                .IsInEnum();
             
            RuleFor(oh => oh.OpeningTime)
                .NotEmpty()

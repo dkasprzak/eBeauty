@@ -27,10 +27,10 @@ public class CurrentBusinessProvider : ICurrentBusinessProvider
         
         var businessId = await _applicationDbContext
             .Businesses
-            .Cacheable()
             .Include(x => x.Account)
             .Where(x => x.Account.Id == accountId)
             .Select(x => x.Id)
+            .Cacheable()
             .FirstOrDefaultAsync();
 
         if (businessId != 0)

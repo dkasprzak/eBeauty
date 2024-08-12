@@ -1,6 +1,6 @@
 ﻿namespace EBeauty.Domain.Enums;
 
-public enum DayOfWeek
+public enum DaysOfWeek
 {
     Monday = 1,
     Tuesday = 2,
