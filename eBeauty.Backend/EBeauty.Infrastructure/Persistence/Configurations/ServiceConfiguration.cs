@@ -1,6 +1,8 @@
 ﻿using EBeauty.Domain.Entities;
+using EBeauty.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EBeauty.Infrastructure.Persistence.Configurations;
 
@@ -15,5 +17,8 @@ public class ServiceConfiguration : IEntityTypeConfiguration<Service>
         builder.HasOne(bt => bt.BusinessType)
             .WithMany(s => s.Services)
             .HasForeignKey(fk => fk.BusinessTypeId);
+
+        builder.Property(s => s.Currency)
+            .HasConversion(new EnumToStringConverter<Currency>());
     }
 }

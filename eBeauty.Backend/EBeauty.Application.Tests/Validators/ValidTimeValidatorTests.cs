@@ -24,7 +24,7 @@ public class ValidTimeValidatorTests
     {
         //Arrange
         var validator = new InlineValidator<string>();
-        validator.RuleFor(x => x).ValidTime();
+        validator.RuleFor(x => x).IsValidTime();
 
         //Act
         var result = validator.Validate(time);
@@ -49,7 +49,7 @@ public class ValidTimeValidatorTests
     {
         //Arrange
         var validator = new InlineValidator<string>();
-        validator.RuleFor(x => x).ValidTime();
+        validator.RuleFor(x => x).IsValidTime();
         
         //Act
         var result = validator.Validate(time);

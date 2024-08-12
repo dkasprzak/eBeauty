@@ -75,11 +75,11 @@ public static class AddOpeningHoursCommand
                         
                         openingHour.RuleFor(oh => oh.OpeningTime)
                             .NotEmpty()
-                            .ValidTime();
+                            .IsValidTime();
 
                         openingHour.RuleFor(oh => oh.ClosingTime)
                             .NotEmpty()
-                            .ValidTime();
+                            .IsValidTime();
 
                         openingHour.RuleFor(oh => oh)
                             .Must(oh => TimeSpan.Parse(oh.ClosingTime) > TimeSpan.Parse(oh.OpeningTime));

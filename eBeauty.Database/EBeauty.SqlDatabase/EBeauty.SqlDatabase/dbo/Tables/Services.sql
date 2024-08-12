@@ -4,7 +4,7 @@
     [Name] NVARCHAR(200) NOT NULL,
     [Price] DECIMAL(18, 4) NOT NULL,
     [Currency] VARCHAR(5) NOT NULL,
-    [Duration] INT NOT NULL,
+    [Duration] TIME NOT NULL,
     [BusinessId] INT NOT NULL,
     [BusinessTypeId] INT NOT NULL,
     CONSTRAINT [PK_Services] PRIMARY KEY CLUSTERED ([Id] ASC),

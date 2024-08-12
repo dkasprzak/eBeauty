@@ -40,6 +40,20 @@ public class BusinessController : BaseController
         var result = await _mediator.Send(model);
         return Ok(result);
     }
+
+    [HttpPost]
+    public async Task<ActionResult> CreateOrUpdateBusinessServices(CreateOrUpdateServicesCommand.Request model)
+    {
+        var result = await _mediator.Send(model);
+        return Ok(result);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult> GetBusinessServices([FromQuery] BusinessServicesQuery.Request query)
+    {
+        var result = await _mediator.Send(query);
+        return Ok(result);
+    }
     
     [HttpPost]
     public async Task<ActionResult> AddOpeningHours(AddOpeningHoursCommand.Request model)
