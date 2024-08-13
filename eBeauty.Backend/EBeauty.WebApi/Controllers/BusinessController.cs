@@ -47,6 +47,13 @@ public class BusinessController : BaseController
         var result = await _mediator.Send(model);
         return Ok(result);
     }
+    
+    [HttpDelete]
+    public async Task<ActionResult> DeleteBusinessServices([FromQuery] DeleteBusinessServicesCommand.Request model)
+    {
+        var result = await _mediator.Send(model);
+        return Ok(result);
+    }
 
     [HttpGet]
     public async Task<ActionResult> GetBusinessServices([FromQuery] BusinessServicesQuery.Request query)
