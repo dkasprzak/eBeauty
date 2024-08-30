@@ -1,6 +1,7 @@
 ﻿using EBeauty.Application.Interfaces;
 using EBeauty.Application.Logic.Abstractions;
 using EBeauty.Domain.Entities;
+using FluentValidation;
 using MediatR;
 
 namespace EBeauty.Application.Logic.ScheduleFunctions.Commands;
@@ -41,6 +42,24 @@ public static class AddScheduleCommand
             {
                 ScheduleId = schedule.Id
             };
+        }
+    }
+
+    public class Validator : AbstractValidator<Request>
+    {
+        public Validator()
+        {
+            RuleFor(x => x.AccountUserId)
+                .NotEmpty();
+
+            RuleFor(x => x.StartTime)
+                .NotEmpty();
+
+            RuleFor(x => x.EndTime)
+                .NotEmpty();
+
+            RuleFor(a => a)
+                .Must(a => a.EndTime > a.StartTime);
         }
     }
 }
