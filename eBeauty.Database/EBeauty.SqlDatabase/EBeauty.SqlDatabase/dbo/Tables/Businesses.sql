@@ -7,7 +7,8 @@
     [Description] NVARCHAR(200),
     [AddressId] INT NOT NULL,
     CONSTRAINT [PK_Businesses] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Businesses_Addresses] FOREIGN KEY ([AddressId]) REFERENCES [dbo].[Addresses] ([Id]) ON DELETE CASCADE
+    CONSTRAINT [FK_Businesses_Addresses] FOREIGN KEY ([AddressId]) REFERENCES [dbo].[Addresses] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [UQ_Address] UNIQUE ([AddressId])
 );
 
 GO

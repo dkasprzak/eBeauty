@@ -6,5 +6,6 @@
     [CreateDate] DATETIMEOFFSET NOT NULL,
     [BusinessId] INT,
     CONSTRAINT [PK_Accounts] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Accounts_Businesses] FOREIGN KEY ([BusinessId]) REFERENCES [dbo].[Businesses] ([Id]) ON DELETE CASCADE
+    CONSTRAINT [FK_Accounts_Businesses] FOREIGN KEY ([BusinessId]) REFERENCES [dbo].[Businesses] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [UQ_Business] UNIQUE ([BusinessId])
 );
