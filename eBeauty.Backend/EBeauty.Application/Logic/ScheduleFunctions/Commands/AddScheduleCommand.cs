@@ -1,8 +1,10 @@
-﻿using EBeauty.Application.Interfaces;
+﻿using EBeauty.Application.Exceptions;
+using EBeauty.Application.Interfaces;
 using EBeauty.Application.Logic.Abstractions;
 using EBeauty.Domain.Entities;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace EBeauty.Application.Logic.ScheduleFunctions.Commands;
 
@@ -28,6 +30,19 @@ public static class AddScheduleCommand
 
         public async Task<Result> Handle(Request request, CancellationToken cancellationToken)
         {
+            var account = await _currentAccountProvider.GetAuthenticatedAccount();
+
+            var accountUserExists = await _applicationDbContext.Accounts
+                .Include(au => au.AccountUsers)
+                .FirstOrDefaultAsync(a =>
+                    a.BusinessId == account.BusinessId
+                    && a.AccountUsers.Any(au => au.Id == request.AccountUserId));
+
+            if (accountUserExists is null)
+            {
+                throw new NotFoundException("AccountUserDoesNotExists");
+            }
+            
             var schedule = new Schedule
             {
                 AccountUserId = request.AccountUserId,
