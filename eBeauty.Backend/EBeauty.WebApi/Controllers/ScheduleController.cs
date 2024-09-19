@@ -12,6 +12,13 @@ public class ScheduleController : BaseController
     {
     }
 
+    [HttpGet]
+    public async Task<ActionResult> EmployeeSchedule([FromQuery] EmployeeScheduleQuery.Request query)
+    {
+        var result = await _mediator.Send(query);
+        return Ok(result);
+    }
+    
     [HttpPost]
     public async Task<ActionResult> AddDayToSchedule([FromBody] AddScheduleCommand.Request model)
     {

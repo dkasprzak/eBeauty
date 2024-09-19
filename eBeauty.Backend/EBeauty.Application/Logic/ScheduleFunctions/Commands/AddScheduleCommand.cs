@@ -73,8 +73,9 @@ public static class AddScheduleCommand
             RuleFor(x => x.EndTime)
                 .NotEmpty();
 
-            RuleFor(a => a)
-                .Must(a => a.EndTime > a.StartTime);
+            RuleFor(a => a.EndTime)
+                .GreaterThan(x => x.StartTime);
+;
         }
     }
 }
