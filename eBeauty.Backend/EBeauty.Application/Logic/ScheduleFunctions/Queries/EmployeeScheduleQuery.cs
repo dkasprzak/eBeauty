@@ -3,6 +3,11 @@ using EBeauty.Application.Interfaces;
 using EBeauty.Application.Logic.Abstractions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 public static class EmployeeScheduleQuery
 {
@@ -12,7 +17,7 @@ public static class EmployeeScheduleQuery
         public string? StartDate { get; set; }
         public string? EndDate { get; set; }
     }
-    
+
     public class Result
     {
         public List<Schedule> Schedules { get; set; } = new();
@@ -24,12 +29,13 @@ public static class EmployeeScheduleQuery
             public required string EndTime { get; set; }
         }
     }
-    
+
     public class Handler : BaseQueryHandler, IRequestHandler<Request, Result>
     {
         private readonly ICurrentBusinessProvider _currentBusinessProvider;
-        
-        public Handler(ICurrentBusinessProvider currentBusinessProvider, ICurrentAccountProvider currentAccountProvider, IApplicationDbContext applicationDbContext) : base(currentAccountProvider, applicationDbContext)
+
+        public Handler(ICurrentBusinessProvider currentBusinessProvider, ICurrentAccountProvider currentAccountProvider, IApplicationDbContext applicationDbContext)
+            : base(currentAccountProvider, applicationDbContext)
         {
             _currentBusinessProvider = currentBusinessProvider;
         }
@@ -37,12 +43,12 @@ public static class EmployeeScheduleQuery
         public async Task<Result> Handle(Request request, CancellationToken cancellationToken)
         {
             var businessId = await _currentBusinessProvider.GetBusinessId();
-            
+
             var accountUser = await _applicationDbContext.AccountUsers
                 .Include(x => x.Account)
                 .FirstOrDefaultAsync(a => a.Id == request.EmployeeAccountId
                                           && a.Account.BusinessId == businessId);
-            
+
             if (accountUser is null)
             {
                 throw new NotFoundException("AccountUserDoesNotExists");
@@ -51,14 +57,14 @@ public static class EmployeeScheduleQuery
             var schedulesQuery = _applicationDbContext.Schedules
                 .Where(x => x.AccountUserId == accountUser.Id);
 
-            DateOnly? startDate = null;
-            DateOnly? endDate = null;
+            DateTime? startDate = null;
+            DateTime? endDate = null;
 
             if (!string.IsNullOrEmpty(request.StartDate))
             {
-                if (DateOnly.TryParse(request.StartDate, out var parsedStartDate))
+                if (DateTime.TryParse(request.StartDate, out var parsedStartDate))
                 {
-                    startDate = parsedStartDate;
+                    startDate = parsedStartDate.Date;
                 }
                 else
                 {
@@ -68,9 +74,9 @@ public static class EmployeeScheduleQuery
 
             if (!string.IsNullOrEmpty(request.EndDate))
             {
-                if (DateOnly.TryParse(request.EndDate, out var parsedEndDate))
+                if (DateTime.TryParse(request.EndDate, out var parsedEndDate))
                 {
-                    endDate = parsedEndDate;
+                    endDate = parsedEndDate.Date.AddDays(1).AddTicks(-1);
                 }
                 else
                 {
@@ -80,11 +86,11 @@ public static class EmployeeScheduleQuery
 
             if (startDate.HasValue && endDate.HasValue)
             {
-                schedulesQuery = schedulesQuery.Where(s => 
-                    DateOnly.FromDateTime(s.StartTime.DateTime) >= startDate.Value &&
-                    DateOnly.FromDateTime(s.StartTime.DateTime) <= endDate.Value);
+                schedulesQuery = schedulesQuery.Where(s =>
+                    s.StartTime >= startDate.Value &&
+                    s.StartTime <= endDate.Value);
             }
-     
+
             var schedules = await schedulesQuery
                 .Select(
                     r => new Result.Schedule
