@@ -26,23 +26,30 @@ public class BusinessController : BaseController
         var result = await _mediator.Send(query);
         return Ok(result);
     }
+
+    [HttpGet]
+    public async Task<ActionResult> GetBusinessEmployeeUsersList()
+    {
+        var result = await _mediator.Send(new BusinessEmployeeUsersListQuery.Request());
+        return Ok(result);
+    }
     
     [HttpPost]
-    public async Task<ActionResult> CreateOrUpdateBusinessData(CreateOrUpdateBusinessData.Request model)
+    public async Task<ActionResult> CreateOrUpdateBusinessData([FromBody] CreateOrUpdateBusinessData.Request model)
     {
         var result = await _mediator.Send(model);
         return Ok(result);
     }
     
     [HttpPut]
-    public async Task<ActionResult> UpdateBusinessOpeningHours(UpdateOpeningHoursCommand.Request model)
+    public async Task<ActionResult> UpdateBusinessOpeningHours([FromBody] UpdateOpeningHoursCommand.Request model)
     {
         var result = await _mediator.Send(model);
         return Ok(result);
     }
 
     [HttpPost]
-    public async Task<ActionResult> CreateOrUpdateBusinessServices(CreateOrUpdateServicesCommand.Request model)
+    public async Task<ActionResult> CreateOrUpdateBusinessServices([FromBody] CreateOrUpdateServicesCommand.Request model)
     {
         var result = await _mediator.Send(model);
         return Ok(result);
@@ -63,7 +70,7 @@ public class BusinessController : BaseController
     }
     
     [HttpPost]
-    public async Task<ActionResult> AddOpeningHours(AddOpeningHoursCommand.Request model)
+    public async Task<ActionResult> AddOpeningHours([FromBody] AddOpeningHoursCommand.Request model)
     {
         var result = await _mediator.Send(model);
         return Ok(result);
