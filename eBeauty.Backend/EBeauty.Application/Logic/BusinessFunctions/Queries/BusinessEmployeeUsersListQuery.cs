@@ -37,7 +37,7 @@ public static class BusinessEmployeeUsersListQuery
             var businessId = await _currentBusinessProvider.GetBusinessId();
 
             var employees = await _applicationDbContext.Users
-                .Where(u => u.AccountUsers.Any(x => x.Account.BusinessId == businessId) && u.IsActive)
+                .Where(u => u.IsActive && u.AccountUsers.Any(x => x.Account.BusinessId == businessId))
                 .Select(u => new Result.User
                 {
                     Id = u.Id,
